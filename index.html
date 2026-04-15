@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Birthday, My Love ❤️</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'love-pink': '#ff4d6d',
+                        'love-dark': '#0a0a0c',
+                        'love-gold': '#d4af37'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                        'cursive': ['Great Vibes', 'cursive'],
+                    },
+                    transitionTimingFunction: {
+                        'apple': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base & Background */
+        body {
+            background-color: #0a0a0c;
+            background-image: radial-gradient(circle at 50% 0%, #2a0812 0%, #0a0a0c 70%);
+            color: #fcfcfc;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* Custom Cursor Glow */
+        #cursor-glow {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,77,109,0.15) 0%, rgba(0,0,0,0) 60%);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        body:hover #cursor-dot {
+            width: 12px;
+            height: 12px;
+        }
+
+        a:hover ~ #cursor-dot, button:hover ~ #cursor-dot, .interactive:hover ~ #cursor-dot {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 77, 109, 0.2);
+            border: 1px solid rgba(255, 77, 109, 0.5);
+        }
+
+        /* Utilities */
+        .glass {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #ff4d6d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: fixed;
+            bottom: -10vh;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Typewriter Cursor */
+        .typewriter-cursor::after {
+            content: '|';
+            animation: blink 1s step-start infinite;
+            color: #ff4d6d;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Cake & Candle CSS */
+        .cake-container {
+            position: relative;
+            width: 250px;
+            height: 200px;
+            margin: 0 auto;
+            transform: scale(0.8);
+        }
+        @media (min-width: 640px) {
+            .cake-container { transform: scale(1); }
+        }
+        .cake-tier {
+            position: absolute;
+            background: linear-gradient(to bottom, #2a2a2e, #1a1a1d);
+            border-radius: 10px;
+            border-top: 2px solid rgba(255,77,109,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 2px 10px rgba(255,255,255,0.05);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .tier-bottom { width: 220px; height: 70px; bottom: 0; }
+        .tier-middle { width: 170px; height: 60px; bottom: 70px; }
+        .tier-top { width: 120px; height: 50px; bottom: 130px; }
+        
+        .candle {
+            position: absolute;
+            width: 12px;
+            height: 40px;
+            background: linear-gradient(to right, #e0e0e0, #ffffff, #e0e0e0);
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            box-shadow: inset 0 -5px 5px rgba(0,0,0,0.1);
+        }
+        .flame {
+            position: absolute;
+            width: 16px;
+            height: 26px;
+            background: radial-gradient(ellipse at bottom, #ffcc00 0%, #ff6600 60%, rgba(255,0,0,0) 100%);
+            border-radius: 50% 50% 20% 20%;
+            bottom: 222px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff6600;
+            animation: flicker 0.1s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+            transition: all 0.5s ease;
+        }
+        .flame.blown-out {
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(1.05) rotate(1deg); opacity: 1; }
+        }
+
+        /* Secret Trigger */
+        .secret-sparkle {
+            display: inline-block;
+            cursor: pointer;
+            color: #d4af37;
+            animation: pulseGlow 2s infinite;
+            transition: transform 0.3s;
+        }
+        .secret-sparkle:hover { transform: scale(1.5) rotate(15deg); }
+        
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 5px rgba(212, 175, 55, 0.2); opacity: 0.7; }
+            50% { text-shadow: 0 0 15px rgba(212, 175, 55, 0.8); opacity: 1; }
+        }
+
+        /* Image Gallery Hover Overlay */
+        .gallery-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0c; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff4d6d; }
+    </style>
+</head>
+<body class="antialiased font-sans relative selection:bg-love-pink selection:text-white">
+
+    <!-- Custom Cursors -->
+    <div id="cursor-glow"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- Background Audio (Placeholder lovely piano URL) -->
+    <!-- Browsers require interaction before playing audio -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Audio Controller -->
+    <button id="music-btn" class="interactive fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 glass p-3 md:p-4 rounded-full text-white/70 hover:text-white transition-all hover:scale-110 shadow-lg group">
+        <i data-lucide="music" class="w-5 h-5 group-hover:animate-pulse"></i>
+    </button>
+
+    <!-- Particles Container -->
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section id="hero" class="relative w-full min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden z-10 px-4">
+        <div id="hero-content" class="text-center transition-transform duration-200 ease-out z-10 w-full">
+            <h2 class="font-sans text-xs sm:text-sm md:text-base tracking-[0.2em] md:tracking-[0.3em] text-white/50 uppercase mb-4 opacity-0 animate-[fadeIn_2s_ease-out_0.5s_forwards]">A special day for a special person</h2>
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tight drop-shadow-2xl opacity-0 animate-[fadeInUp_2s_ease-out_1s_forwards]">
+                For You <span class="text-love-pink inline-block animate-pulse">❤️</span>
+            </h1>
+            <p class="mt-6 md:mt-8 text-white/40 font-light max-w-md mx-auto text-sm md:text-base opacity-0 animate-[fadeIn_2s_ease-out_2s_forwards]">
+                Scroll gently to begin our journey.
+            </p>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 animate-[fadeIn_2s_ease-out_2.5s_forwards]">
+            <div class="w-[1px] h-12 md:h-16 bg-gradient-to-b from-white/0 via-white/50 to-white/0 animate-pulse"></div>
+        </div>
+    </section>
+
+    <!-- ================= STORY SCROLL ================= -->
+    <section class="py-20 md:py-32 px-6 md:px-20 max-w-4xl mx-auto relative z-10">
+        <div class="space-y-24 md:space-y-40">
+            <div class="reveal text-center">
+                <p class="font-serif text-xl sm:text-2xl md:text-4xl leading-relaxed text-white/90">
+                    From the moment you entered my life,<br>
+                    everything changed.
+                </p>
+            </div>
+            
+            <div class="reveal text-center">
+                <p class="font-serif text-xl sm:text-2xl md:text-4xl leading-relaxed text-white/90">
+                    The colors got brighter, the days felt shorter,<br class="hidden sm:block">
+                    and my heart found its home.
+                </p>
+            </div>
+
+            <div class="reveal text-center relative">
+                <p class="font-serif text-xl sm:text-2xl md:text-4xl leading-relaxed text-white/90">
+                    Today, we celebrate <span class="text-love-pink italic">20 years</span> of the world<br class="hidden sm:block">
+                    being blessed with your presence.
+                    <span class="secret-sparkle ml-1 interactive" title="A tiny secret...">✨</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TYPING MESSAGE ================= -->
+    <section class="py-20 md:py-32 px-4 sm:px-6 relative z-10 bg-gradient-to-b from-transparent via-love-pink/5 to-transparent">
+        <div class="max-w-3xl mx-auto glass p-6 sm:p-10 md:p-16 rounded-3xl shadow-2xl">
+            <div class="mb-6 md:mb-8 opacity-50"><i data-lucide="quote" class="w-6 h-6 md:w-8 md:h-8 text-love-pink"></i></div>
+            <div id="typewriter-container" class="min-h-[150px] md:min-h-[200px]">
+                <p id="typewriter-text" class="font-cursive text-2xl sm:text-3xl md:text-5xl leading-relaxed text-white/90 typewriter-cursor"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MEMORY GALLERY ================= -->
+    <section class="py-20 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-12 md:mb-16 reveal">
+            <h3 class="font-serif text-3xl md:text-4xl text-white mb-2">Our Moments</h3>
+            <p class="text-white/50 font-light tracking-widest uppercase text-xs md:text-sm">Treasured forever</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <!-- Gallery Item 1 -->
+            <div class="reveal interactive group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer shadow-2xl" onclick="openModal('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800')">
+                <img src="img-1.jpg" alt="Memory" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                <div class="absolute inset-0 gallery-overlay opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                    <p class="font-serif text-xl md:text-2xl text-white mb-1 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">That perfect evening</p>
+                    <p class="font-sans text-xs md:text-sm text-white/70 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">Just you and me.</p>
+                </div>
+            </div>
+
+            <!-- Gallery Item 2 -->
+            <div class="reveal interactive group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer shadow-2xl mt-0 md:mt-12" onclick="openModal('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800')">
+                <img src="img-2.jpg" alt="Memory" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                <div class="absolute inset-0 gallery-overlay opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                    <p class="font-serif text-xl md:text-2xl text-white mb-1 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Your beautiful smile</p>
+                    <p class="font-sans text-xs md:text-sm text-white/70 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">My favorite view in the world.</p>
+                </div>
+            </div>
+
+            <!-- Gallery Item 3 -->
+            <div class="reveal interactive group relative rounded-2xl overflow-hidden aspect-[4/5] cursor-pointer shadow-2xl mt-0 lg:mt-24" onclick="openModal('https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800')">
+                <img src="img-3.jpg" alt="Memory" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                <div class="absolute inset-0 gallery-overlay opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                    <p class="font-serif text-xl md:text-2xl text-white mb-1 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Adventures</p>
+                    <p class="font-sans text-xs md:text-sm text-white/70 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">To many more together.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= INTERACTIVE CAKE CLIMAX ================= -->
+    <section class="py-24 md:py-40 px-4 sm:px-6 relative z-10 flex flex-col items-center justify-center min-h-[60vh] md:min-h-[80vh]">
+        <div class="reveal text-center mb-10 md:mb-16">
+            <h3 class="font-serif text-3xl md:text-5xl text-white mb-2 md:mb-4">Make a Wish</h3>
+            <p class="text-white/50 text-sm md:text-base">Close your eyes, think of your deepest wish, then blow the candles.</p>
+        </div>
+
+        <div class="reveal relative w-full flex flex-col items-center">
+            <!-- CSS Cake -->
+            <div class="cake-container mb-8 md:mb-12">
+                <div class="cake-tier tier-bottom"></div>
+                <div class="cake-tier tier-middle"></div>
+                <div class="cake-tier tier-top"></div>
+                <div class="candle"></div>
+                <div class="flame" id="candle-flame"></div>
+            </div>
+
+            <button id="blow-btn" class="interactive px-6 py-3 md:px-8 md:py-4 bg-white text-black text-sm md:text-base font-medium rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] hover:scale-105 transition-all duration-300">
+                Blow the candles 🎂
+            </button>
+
+            <!-- Final Message hidden initially -->
+            <div id="final-message" class="hidden flex-col items-center mt-8 md:mt-12 opacity-0 transition-opacity duration-1000 px-4 text-center">
+                <h2 class="font-serif text-4xl sm:text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ffd700] via-[#ff4d6d] to-[#ffd700] animate-pulse">
+                    Happy 20th Birthday Betuu💗!
+                </h2>
+                <p class="mt-4 md:mt-6 font-cursive text-2xl md:text-3xl text-white/90">I love you more than words can say. ❤️</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Space -->
+    <footer class="h-20 md:h-32"></footer>
+
+    <!-- ================= MODALS ================= -->
+    
+    <!-- Image Preview Modal -->
+    <div id="image-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl transition-opacity duration-300 opacity-0" id="modal-backdrop"></div>
+        <!-- Content -->
+        <div class="relative z-10 max-w-5xl w-full max-h-[90vh] transition-all duration-500 scale-95 opacity-0" id="modal-content">
+            <button onclick="closeModal()" class="interactive absolute -top-12 md:-top-12 right-0 md:right-0 text-white/70 hover:text-white transition-colors p-2 z-50">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <img id="modal-img" src="" alt="Expanded preview" class="w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Secret Message Modal -->
+    <div id="secret-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 sm:p-6">
+        <div class="absolute inset-0 bg-[#1a050a]/95 backdrop-blur-2xl transition-opacity duration-500 opacity-0" id="secret-backdrop"></div>
+        <div class="relative z-10 max-w-2xl w-full glass p-6 sm:p-10 md:p-16 rounded-3xl border border-love-pink/20 shadow-[0_0_50px_rgba(255,77,109,0.15)] transition-all duration-700 scale-90 opacity-0" id="secret-content">
+            <button onclick="closeSecret()" class="interactive absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-love-pink transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-center justify-center mb-6 md:mb-8">
+                <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 text-love-pink animate-pulse"></i>
+            </div>
+            <p id="secret-typewriter" class="font-serif text-lg sm:text-xl md:text-2xl leading-relaxed text-white/90 text-center typewriter-cursor min-h-[120px] md:min-h-[150px]"></p>
+        </div>
+    </div>
+
+    <!-- Keyframe animations for Tailwind -->
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- Custom Cursor Logic ---
+        const cursorGlow = document.getElementById('cursor-glow');
+        const cursorDot = document.getElementById('cursor-dot');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let glowX = mouseX;
+        let glowY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Instant dot update
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            
+            // Disable default cursor if mouse moves
+            if(document.body.style.cursor !== 'none') document.body.style.cursor = 'none';
+        });
+
+        // Smooth trailing effect for the glow using requestAnimationFrame
+        function animateCursor() {
+            // Easing factor
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // --- Hero Parallax Effect ---
+        const heroContent = document.getElementById('hero-content');
+        document.addEventListener('mousemove', (e) => {
+            if (window.scrollY > window.innerHeight) return; // Don't compute if not in view
+            
+            const x = (window.innerWidth / 2 - e.clientX) / 40;
+            const y = (window.innerHeight / 2 - e.clientY) / 40;
+            
+            heroContent.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // --- Floating Particles (Hearts/Stars) ---
+        const particlesContainer = document.getElementById('particles-container');
+        const particleIcons = ['❤️', '✨', '🌟', '💖'];
+        
+        function createParticle() {
+            const el = document.createElement('div');
+            el.className = 'particle font-sans';
+            el.innerText = particleIcons[Math.floor(Math.random() * particleIcons.length)];
+            
+            // Randomize position, size, and animation duration
+            const size = Math.random() * 1.5 + 0.5; // 0.5rem to 2rem
+            const left = Math.random() * 100; // 0 to 100vw
+            const duration = Math.random() * 10 + 10; // 10s to 20s
+            const delay = Math.random() * 5;
+
+            el.style.fontSize = `${size}rem`;
+            el.style.left = `${left}vw`;
+            el.style.animationDuration = `${duration}s`;
+            el.style.animationDelay = `${delay}s`;
+
+            particlesContainer.appendChild(el);
+
+            // Cleanup after animation ends
+            setTimeout(() => { el.remove(); }, (duration + delay) * 1000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 800);
+        // Initial burst
+        for(let i=0; i<15; i++) createParticle();
+
+        // --- Scroll Reveal Logic using Intersection Observer ---
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Optional: stop observing once revealed
+                    // revealObserver.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Typewriter Effect Logic ---
+        const loveLetter = `My Smoochy🤍,\n\nWatching you grow over the years has been the greatest privilege of my life. You are kind, brilliant, and infinitely beautiful inside and out.\n\nThank you for being my anchor, my peace, and my greatest adventure.\n\nHere is to you 🦕.`;
+        const typewriterElement = document.getElementById('typewriter-text');
+        let typeIndex = 0;
+        let isTyping = false;
+
+        function typeWriter() {
+            if (typeIndex < loveLetter.length) {
+                // Handle newlines
+                if (loveLetter.charAt(typeIndex) === '\n') {
+                    typewriterElement.innerHTML += '<br>';
+                } else {
+                    typewriterElement.innerHTML += loveLetter.charAt(typeIndex);
+                }
+                typeIndex++;
+                // Randomize typing speed slightly for realism
+                const speed = Math.random() * 50 + 30; 
+                setTimeout(typeWriter, speed);
+            } else {
+                typewriterElement.classList.remove('typewriter-cursor');
+            }
+        }
+
+        // Trigger typewriter when section is in view
+        const typeContainer = document.getElementById('typewriter-container');
+        const typeObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !isTyping) {
+                isTyping = true;
+                setTimeout(typeWriter, 500); // Small delay before starting
+            }
+        }, { threshold: 0.5 });
+        typeObserver.observe(typeContainer);
+
+        // --- Interactive Cake & Confetti ---
+        const blowBtn = document.getElementById('blow-btn');
+        const candleFlame = document.getElementById('candle-flame');
+        const finalMessage = document.getElementById('final-message');
+
+        blowBtn.addEventListener('click', () => {
+            // 1. Blow out flame
+            candleFlame.classList.add('blown-out');
+            
+            // 2. Hide button smoothly
+            blowBtn.style.opacity = '0';
+            blowBtn.style.pointerEvents = 'none';
+            setTimeout(() => blowBtn.style.display = 'none', 500);
+
+            // 3. Fire Confetti (using canvas-confetti)
+            const duration = 3000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4d6d', '#ffd700', '#ffffff']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4d6d', '#ffd700', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Fire a big burst in center
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffd700', '#ffffff'],
+                disableForReducedMotion: true
+            });
+
+            // 4. Show final message
+            setTimeout(() => {
+                finalMessage.classList.remove('hidden');
+                finalMessage.style.display = 'flex';
+                // Trigger reflow
+                void finalMessage.offsetWidth;
+                finalMessage.style.opacity = '1';
+            }, 1000);
+        });
+
+        // --- Image Modal Logic ---
+        const imageModal = document.getElementById('image-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const modalImg = document.getElementById('modal-img');
+
+        window.openModal = function(src) {
+            modalImg.src = src;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('flex');
+            
+            // Small delay for CSS transitions to kick in
+            setTimeout(() => {
+                modalBackdrop.style.opacity = '1';
+                modalContent.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
+            
+            // Disable body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function() {
+            modalBackdrop.style.opacity = '0';
+            modalContent.style.opacity = '0';
+            modalContent.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                imageModal.classList.remove('flex');
+                document.body.style.overflow = ''; // Restore scroll
+            }, 300); // Match duration
+        }
+
+        // Close modal on escape key or clicking backdrop
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') {
+                closeModal();
+                closeSecret();
+            }
+        });
+        modalBackdrop.addEventListener('click', closeModal);
+
+        // --- Audio Control (Updated) ---
+const audio = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-btn');
+const musicIcon = musicBtn.querySelector('i');
+
+let isPlaying = false;
+let hasStarted = false; // track first interaction
+
+// Start music on first interaction
+function startMusic() {
+    if (!hasStarted) {
+        audio.volume = 0.3; // 30% volume
+        audio.play().catch(() => {});
+        isPlaying = true;
+        hasStarted = true;
+
+        musicIcon.setAttribute('data-lucide', 'pause');
+        musicBtn.classList.add('bg-white/20');
+        lucide.createIcons();
+    }
+}
+
+// Trigger only once on first click/touch
+document.addEventListener('click', startMusic, { once: true });
+document.addEventListener('touchstart', startMusic, { once: true });
+
+// Manual music button control
+musicBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        audio.pause();
+        musicIcon.setAttribute('data-lucide', 'music');
+        musicBtn.classList.remove('bg-white/20');
+    } else {
+        audio.volume = 0.5;
+        audio.play();
+        musicIcon.setAttribute('data-lucide', 'pause');
+        musicBtn.classList.add('bg-white/20');
+    }
+
+    lucide.createIcons();
+    isPlaying = !isPlaying;
+});
+
+        // --- Secret Hidden Message Logic ---
+        const secretTriggers = document.querySelectorAll('.secret-sparkle');
+        const secretModal = document.getElementById('secret-modal');
+        const secretBackdrop = document.getElementById('secret-backdrop');
+        const secretContent = document.getElementById('secret-content');
+        const secretTypewriter = document.getElementById('secret-typewriter');
+        
+        const secretText = "You found my little secret.\n\nI just wanted to remind you here, where no one else is looking...\n\nYou are my everything. Forever. ♾️";
+        let secretTypingInterval;
+
+        secretTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                // Open Modal
+                secretModal.classList.remove('hidden');
+                secretModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    secretBackdrop.style.opacity = '1';
+                    secretContent.style.opacity = '1';
+                    secretContent.style.transform = 'scale(1)';
+                }, 10);
+
+                // Start secret typing
+                secretTypewriter.innerHTML = '';
+                secretTypewriter.classList.add('typewriter-cursor');
+                let sIndex = 0;
+                
+                function typeSecret() {
+                    if (sIndex < secretText.length) {
+                        if (secretText.charAt(sIndex) === '\n') {
+                            secretTypewriter.innerHTML += '<br>';
+                        } else {
+                            secretTypewriter.innerHTML += secretText.charAt(sIndex);
+                        }
+                        sIndex++;
+                        secretTypingInterval = setTimeout(typeSecret, 60);
+                    } else {
+                        secretTypewriter.classList.remove('typewriter-cursor');
+                    }
+                }
+                
+                setTimeout(typeSecret, 800); // Wait for modal to open
+            });
+        });
+
+        window.closeSecret = function() {
+            clearTimeout(secretTypingInterval);
+            
+            secretBackdrop.style.opacity = '0';
+            secretContent.style.opacity = '0';
+            secretContent.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                secretModal.classList.add('hidden');
+                secretModal.classList.remove('flex');
+                document.body.style.overflow = '';
+                secretTypewriter.innerHTML = ''; // reset text
+            }, 500);
+        }
+        
+        secretBackdrop.addEventListener('click', closeSecret);
+
+        // Mobile fallback for cursor (hide custom cursor on touch devices)
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            cursorGlow.style.display = 'none';
+            cursorDot.style.display = 'none';
+            document.body.style.cursor = 'auto';
+            // Remove interactive hover classes that rely on cursor
+            document.querySelectorAll('.interactive').forEach(el => el.classList.remove('interactive'));
+        }
+
+    </script>
+</body>
+</html>
