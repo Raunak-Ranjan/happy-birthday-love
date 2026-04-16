@@ -543,6 +543,16 @@
         const finalMessage = document.getElementById('final-message');
 
         blowBtn.addEventListener('click', () => {
+            // 0. Play music
+            audio.volume = 0.3;
+            audio.play().catch(() => {});
+            if (!isPlaying) {
+                isPlaying = true;
+                musicIcon.setAttribute('data-lucide', 'pause');
+                musicBtn.classList.add('bg-white/20');
+                lucide.createIcons();
+            }
+
             // 1. Blow out flame
             candleFlame.classList.add('blown-out');
             
@@ -585,7 +595,7 @@
                 disableForReducedMotion: true
             });
 
-            // 4. Show final message
+            // 5. Show final message
             setTimeout(() => {
                 finalMessage.classList.remove('hidden');
                 finalMessage.style.display = 'flex';
