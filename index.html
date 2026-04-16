@@ -659,7 +659,7 @@ let hasStarted = false; // track first interaction
 // Start music on first interaction
 function startMusic() {
     if (!hasStarted) {
-        audio.volume = 0.3; // 30% volume
+        audio.volume = 0.7; // 70% volume
         audio.play().catch(() => {});
         isPlaying = true;
         hasStarted = true;
@@ -681,7 +681,7 @@ musicBtn.addEventListener('click', () => {
         musicIcon.setAttribute('data-lucide', 'music');
         musicBtn.classList.remove('bg-white/20');
     } else {
-        audio.volume = 0.3;
+        audio.volume = 0.7;
         audio.play();
         musicIcon.setAttribute('data-lucide', 'pause');
         musicBtn.classList.add('bg-white/20');
